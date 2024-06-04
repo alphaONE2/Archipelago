@@ -12,11 +12,11 @@ class OoTMMWebWorld(WebWorld):
     theme = "partyTime"
 
     setup_en = Tutorial(
-        tutorial_name="Start Guide",
-        description="A guide to playing OoTMM.",
+        tutorial_name="Multiworld Setup Guide",
+        description="A guide to setting up the Archipelago Ocarina of Time & Majora's Mask software on your computer.",
         language="English",
-        file_name="guide_en.md",
-        link="guide/en",
+        file_name="setup_en.md",
+        link="setup/en",
         authors=["Fletch & Iryoku"],
     )
 
@@ -24,7 +24,7 @@ class OoTMMWebWorld(WebWorld):
 
 
 class OoTMMWorld(World):
-    """The greatest game of all time."""
+    """Ocarina of Time & Majora's Mask"""
 
     game = "Ocarina of Time & Majora's Mask"
     data_version = 3
@@ -84,6 +84,10 @@ class OoTMMWorld(World):
         menu.connect(ootmm)
 
         ootmm.add_locations(self.location_name_to_id, OoTMMLocation)
+
+        self.multiworld.completion_condition[self.player] = lambda state: (
+            state.has("GANON", self.player) and state.has("MAJORA", self.player)
+        )
 
     def generate_output(self, output_directory):
         pass
