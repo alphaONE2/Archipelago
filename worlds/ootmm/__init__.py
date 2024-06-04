@@ -54,11 +54,10 @@ class OoTMMWorld(World):
             symbolic_id = location.vanilla_item
 
             # Handle RANDOM and FLEXIBLE items
-            match symbolic_id:
-                case "OOT_RANDOM" | "OOT_FLEXIBLE":
-                    symbolic_id = "OOT_RUPEE_GREEN"
-                case "MM_RANDOM":
-                    symbolic_id = "MM_RUPEE_GREEN"
+            if symbolic_id == "OOT_RANDOM" or symbolic_id == "OOT_FLEXIBLE":
+                symbolic_id = "OOT_RUPEE_GREEN"
+            elif symbolic_id == "MM_RANDOM":
+                symbolic_id = "MM_RUPEE_GREEN"
 
             item = self.create_item_from_symbolic_id(symbolic_id)
             if item.advancement or item.useful:
