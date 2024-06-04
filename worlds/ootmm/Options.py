@@ -2912,246 +2912,410 @@ items_progressive_options: dict[str, Option] = {
 
 
 class SharedNutsSticks(Toggle):
+    """
+    Shared Nuts & Sticks
+    """
+
     display_name = "Shared Nuts & Sticks"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedBows(Toggle):
+    """
+    Shared Bows
+    """
+
     display_name = "Shared Bows"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedBombBags(Toggle):
+    """
+    Shared Bomb Bags
+    """
+
     display_name = "Shared Bomb Bags"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMagic(Toggle):
+    """
+    Shared Magic
+    """
+
     display_name = "Shared Magic"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMagicArrowFire(Toggle):
+    """
+    Shared Fire Arrow
+    """
+
     display_name = "Shared Fire Arrow"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMagicArrowIce(Toggle):
+    """
+    Shared Ice Arrow
+    """
+
     display_name = "Shared Ice Arrow"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMagicArrowLight(Toggle):
+    """
+    Shared Light Arrow
+    """
+
     display_name = "Shared Light Arrow"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedSongEpona(Toggle):
+    """
+    Shared Epona's Song
+    """
+
     display_name = "Shared Epona's Song"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedSongStorms(Toggle):
+    """
+    Shared Song of Storms
+    """
+
     display_name = "Shared Song of Storms"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedSongTime(Toggle):
+    """
+    Shared Song of Time
+    """
+
     display_name = "Shared Song of Time"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedSongSun(Toggle):
+    """
+    Shared Sun's Song
+    """
+
     display_name = "Shared Sun's Song"
 
     # condition: function (s) { return hasOoTMM(s) && s.sunSongMm; }
 
 
 class SharedHookshot(Toggle):
+    """
+    Shared Hookshots
+    """
+
     display_name = "Shared Hookshots"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedLens(Toggle):
+    """
+    Shared Lens of Truth
+    """
+
     display_name = "Shared Lens of Truth"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedOcarina(Toggle):
+    """
+    Shared Ocarina of Time
+    """
+
     display_name = "Shared Ocarina of Time"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMaskGoron(Toggle):
+    """
+    Shared Goron Mask
+    """
+
     display_name = "Shared Goron Mask"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMaskZora(Toggle):
+    """
+    Shared Zora Mask
+    """
+
     display_name = "Shared Zora Mask"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMaskBunny(Toggle):
+    """
+    Shared Bunny Hood
+    """
+
     display_name = "Shared Bunny Hood"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMaskKeaton(Toggle):
+    """
+    Shared Keaton Mask
+    """
+
     display_name = "Shared Keaton Mask"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMaskTruth(Toggle):
+    """
+    Shared Mask of Truth
+    """
+
     display_name = "Shared Mask of Truth"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedMaskBlast(Toggle):
+    """
+    Shared Blast Mask
+    """
+
     display_name = "Shared Blast Mask"
 
     # condition: function (s) { return hasOoTMM(s) && s.blastMaskOot; }
 
 
 class SharedMaskStone(Toggle):
+    """
+    Shared Stone Mask
+    """
+
     display_name = "Shared Stone Mask"
 
     # condition: function (s) { return hasOoTMM(s) && s.stoneMaskOot; }
 
 
 class SharedSongElegy(Toggle):
+    """
+    Shared Elegy of Emptiness
+    """
+
     display_name = "Shared Elegy of Emptiness"
 
     # condition: function (s) { return hasOoTMM(s) && s.elegyOot; }
 
 
 class SharedWallets(Toggle):
+    """
+    Shared Wallets
+    """
+
     display_name = "Shared Wallets"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedHealth(Toggle):
+    """
+    Shared Health
+    """
+
     display_name = "Shared Health"
 
     # condition: function (x) { return x.games === 'ootmm'; }
 
 
 class SharedSwords(Toggle):
+    """
+    Shared Swords
+    """
+
     display_name = "Shared Swords"
 
     # condition: function (s) { return hasOoTMM(s) && s.extraChildSwordsOot && s.progressiveGFS !== 'progressive'; }
 
 
 class SharedShields(Toggle):
+    """
+    Shared Shields
+    """
+
     display_name = "Shared Shields"
 
     # condition: function (s) { return hasOoTMM(s) && s.progressiveShieldsOot === s.progressiveShieldsMm; }
 
 
 class SharedSoulsEnemy(Toggle):
+    """
+    Shared Enemy Souls
+    """
+
     display_name = "Shared Enemy Souls"
 
     # condition: function (s) { return hasOoTMM(s) && s.soulsEnemyOot && s.soulsEnemyMm; }
 
 
 class SharedSoulsNpc(Toggle):
+    """
+    Shared NPC Souls
+    """
+
     display_name = "Shared NPC Souls"
 
     # condition: function (s) { return hasOoTMM(s) && s.soulsNpcOot && s.soulsNpcMm; }
 
 
 class SharedSoulsMisc(Toggle):
+    """
+    Shared Misc. Souls
+    """
+
     display_name = "Shared Misc. Souls"
 
     # condition: function (s) { return hasOoTMM(s) && s.soulsMiscOot && s.soulsMiscMm; }
 
 
 class SharedOcarinaButtons(Toggle):
+    """
+    Shared Ocarina Buttons
+    """
+
     display_name = "Shared Ocarina Buttons"
 
     # condition: function (s) { return hasOoTMM(s) && s.ocarinaButtonsShuffleOot && s.ocarinaButtonsShuffleMm; }
 
 
 class SharedSkeletonKey(Toggle):
+    """
+    Shared Skeleton Key
+    """
+
     display_name = "Shared Skeleton Key"
 
     # condition: function (s) { return hasOoTMM(s) && s.skeletonKeyOot && s.skeletonKeyMm; }
 
 
 class SharedBombchuBags(Toggle):
+    """
+    Shared Bombchu Bags
+    """
+
     display_name = "Shared Bombchu Bags"
 
     # condition: function (s) { return hasOoTMM(s) && s.bombchuBagOot && s.bombchuBagMm; }
 
 
 class SharedSpellFire(Toggle):
+    """
+    Shared Din's Fire
+    """
+
     display_name = "Shared Din's Fire"
 
     # condition: function (s) { return hasOoTMM(s) && s.spellFireMm; }
 
 
 class SharedSpellWind(Toggle):
+    """
+    Shared Farore's Wind
+    """
+
     display_name = "Shared Farore's Wind"
 
     # condition: function (s) { return hasOoTMM(s) && s.spellWindMm; }
 
 
 class SharedSpellLove(Toggle):
+    """
+    Shared Nayru's Love
+    """
+
     display_name = "Shared Nayru's Love"
 
     # condition: function (s) { return hasOoTMM(s) && s.spellLoveMm; }
 
 
 class SharedBootsIron(Toggle):
+    """
+    Shared Iron Boots
+    """
+
     display_name = "Shared Iron Boots"
 
     # condition: function (s) { return hasOoTMM(s) && s.bootsIronMm; }
 
 
 class SharedBootsHover(Toggle):
+    """
+    Shared Hover Boots
+    """
+
     display_name = "Shared Hover Boots"
 
     # condition: function (s) { return hasOoTMM(s) && s.bootsHoverMm; }
 
 
 class SharedTunicGoron(Toggle):
+    """
+    Shared Goron Tunic
+    """
+
     display_name = "Shared Goron Tunic"
 
     # condition: function (s) { return hasOoTMM(s) && s.tunicGoronMm; }
 
 
 class SharedTunicZora(Toggle):
+    """
+    Shared Zora Tunic
+    """
+
     display_name = "Shared Zora Tunic"
 
     # condition: function (s) { return hasOoTMM(s) && s.tunicZoraMm; }
 
 
 class SharedScales(Toggle):
+    """
+    Shared Scales
+    """
+
     display_name = "Shared Scales"
 
     # condition: function (s) { return hasOoTMM(s) && s.scalesMm; }
 
 
 class SharedStrength(Toggle):
+    """
+    Shared Strength
+    """
+
     display_name = "Shared Strength"
 
     # condition: function (s) { return hasOoTMM(s) && s.strengthMm; }
