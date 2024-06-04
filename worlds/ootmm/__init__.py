@@ -2,36 +2,25 @@ from typing import List
 
 from BaseClasses import Region, Tutorial
 from worlds.AutoWorld import WebWorld, World
-from .items import OoTMMItem, item_data_table, item_table
-from .locations import OoTMMLocation, OoTMMLocationData, location_data_table, location_table, locked_locations
-from .options import ootmm_options
-from .Regions import region_data_table
-from .Rules import get_button_rule
+from .Items import OoTMMItem, items
+from .Options import ootmm_options
+from .Locations import OoTMMLocation, locations
 import json
 
 
 class OoTMMWebWorld(WebWorld):
     theme = "partyTime"
-    
+
     setup_en = Tutorial(
         tutorial_name="Start Guide",
         description="A guide to playing OoTMM.",
         language="English",
         file_name="guide_en.md",
         link="guide/en",
-        authors=["Fletch & Iryoku"]
+        authors=["Fletch & Iryoku"],
     )
 
-    setup_de = Tutorial(
-        tutorial_name="Anleitung zum Anfangen",
-        description="Eine Anleitung um OoTMM zu spielen.",
-        language="Deutsch",
-        file_name="guide_de.md",
-        link="guide/de",
-        authors=["Held_der_Zeit"]
-    )
-    
-    tutorials = [setup_en, setup_de]
+    tutorials = [setup_en]
 
 
 class OoTMMWorld(World):
@@ -41,66 +30,92 @@ class OoTMMWorld(World):
     data_version = 3
     web = OoTMMWebWorld()
     option_definitions = ootmm_options
-    location_name_to_id = location_table
-    item_name_to_id = item_table
+    location_name_to_id = {name: location.id for name, location in locations.items()}
+    item_name_to_id = {item.display_name: code for code, item in items.items()}
+    item_symbolic_id_to_id = {item.symbolic_id: code for code, item in items.items()}
 
-    def create_item(self, name: str) -> OoTMMItem:
-        return OoTMMItem(name, item_data_table[name].type, item_data_table[name].code, self.player)
+    def create_item(self, item: str) -> OoTMMItem:
+        id = self.item_name_to_id[item]
+        return self.create_item_from_id(id)
+
+    def create_item_from_symbolic_id(self, symbolic_id: str) -> OoTMMItem:
+        id = self.item_symbolic_id_to_id[symbolic_id]
+        return self.create_item_from_id(id)
+
+    def create_item_from_id(self, id: int) -> OoTMMItem:
+        data = items[id]
+        return OoTMMItem(data.display_name, data.classification, data.code, self.player)
 
     def create_items(self) -> None:
-        item_pool: List[OoTMMItem] = []
-        for name, item in item_data_table.items():
-            if item.code and item.can_create(self.multiworld, self.player):
-                for i in range (item.count): 
-                    item_pool.append(self.create_item(name))
+        item_pool: list[OoTMMItem] = []
+        filler: list[OoTMMItem] = []
+
+        for location in locations.values():
+            symbolic_id = location.vanilla_item
+
+            # Handle RANDOM and FLEXIBLE items
+            match symbolic_id:
+                case "OOT_RANDOM" | "OOT_FLEXIBLE":
+                    symbolic_id = "OOT_RUPEE_GREEN"
+                case "MM_RANDOM":
+                    symbolic_id = "MM_RUPEE_GREEN"
+
+            item = self.create_item_from_symbolic_id(symbolic_id)
+            if item.advancement or item.useful:
+                item_pool.append(item)
+            else:
+                filler.append(item)
+
+        # The Deku Mask is required, but does not exist at any vanilla
+        # location in the randomizer, so we need to explicitly add it
+        # to the item pool.
+        item_pool.append(self.create_item_from_symbolic_id("MM_MASK_DEKU"))
+
+        # and then remove one filler item to make room for the Deku Mask
+        filler.remove(self.random.choice(filler))
 
         self.multiworld.itempool += item_pool
+        self.multiworld.itempool += filler
 
     def create_regions(self) -> None:
-        # Create regions.
-        for region_name in region_data_table.keys():
-            region = Region(region_name, self.player, self.multiworld)
-            self.multiworld.regions.append(region)
+        menu = Region("Menu", self.player, self.multiworld)
+        self.multiworld.regions.append(menu)
+        ootmm = Region("OoTMM", self.player, self.multiworld)
+        self.multiworld.regions.append(ootmm)
+        menu.connect(ootmm)
 
-        # Create locations.
-        for region_name, region_data in region_data_table.items():
-            region = self.multiworld.get_region(region_name, self.player)
-            region.add_locations({
-                location_name: location_data.address for location_name, location_data in location_data_table.items()
-                if location_data.region == region_name and location_data.can_create(self.multiworld, self.player)
-            }, OoTMMLocation)
-            region.add_exits(region_data_table[region_name].connecting_regions)
+        ootmm.add_locations(self.location_name_to_id, OoTMMLocation)
 
-        # Place locked locations.
-        for location_name, location_data in locked_locations.items():
-            # Ignore locations we never created.
-            if not location_data.can_create(self.multiworld, self.player):
-                continue
-
-            locked_item = self.create_item(location_data_table[location_name].locked_item)
-            self.multiworld.get_location(location_name, self.player).place_locked_item(locked_item)
-
-        # Set priority location for the Big Red Button!
-        # self.multiworld.priority_locations[self.player].value.add("The Big Red Button")
-    
     def generate_output(self, output_directory):
-        zetable = []
-        for  location in self.multiworld.get_locations(self.player):
-            assert(isinstance(location, OoTMMLocation))
-            key = location.name
-            data = location_data_table[key]
-            if location.item.player == self.player:
-                zetable.append({"Location Name": data.name, "Location Id": data.id, "Game": data.game, "Item": {"Type": "OoTM", "Id": location.item.name}})
-            else:
-                zetable.append({"Location Name": data.name, "Location Id": data.id, "Game": data.game, "Item": {"Type": "AP", "Id": location.item.code, "Slot": location.item.player}})
-            
-        with open (output_directory + "/output.json","w", encoding="utf-8") as outfile:
-            outfile.write(json.dumps(zetable))
-        
-        # path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.json")
+        pass
+        # zetable = []
+        # for location in self.multiworld.get_locations(self.player):
+        #     assert isinstance(location, OoTMMLocation)
+        #     key = location.name
+        #     data = location_data_table[key]
+        #     if location.item.player == self.player:
+        #         zetable.append(
+        #             {
+        #                 "Location Name": data.name,
+        #                 "Location Id": data.id,
+        #                 "Game": data.game,
+        #                 "Item": {"Type": "OoTM", "Id": location.item.name},
+        #             }
+        #         )
+        #     else:
+        #         zetable.append(
+        #             {
+        #                 "Location Name": data.name,
+        #                 "Location Id": data.id,
+        #                 "Game": data.game,
+        #                 "Item": {"Type": "AP", "Id": location.item.code, "Slot": location.item.player},
+        #             }
+        #         )
 
-    # def get_filler_item_name(self) -> str:
-    #     return "A Cool Filler Item (No Satisfaction Guaranteed)"
+        # with open(output_directory + "/output.json", "w", encoding="utf-8") as outfile:
+        #     outfile.write(json.dumps(zetable))
+
+        # path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.json")
 
     # def set_rules(self) -> None:
     #     button_rule = get_button_rule(self.multiworld, self.player)
